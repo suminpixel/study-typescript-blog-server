@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "lib": ["es2015", "es2016", "es2017", "es2018", "es2019", "es2020", "dom"],
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "typeRoots": ["@types"] //파일에 임포트 되어있는 모듈, 라이브러리들의 타입은 기본적으로 컴파일시 적용
+    }
+}
