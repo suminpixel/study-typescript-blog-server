@@ -5,11 +5,11 @@ import User from '../models/user';
 
 export default () => {
   passport.use('local', new Strategy({
-    usernameField: 'email',
+    usernameField: 'user_id',
     passwordField: 'password',
-  }, async (email, password, done) => {
+  }, async (user_id, password, done) => {
     try {
-      const user = await User.findOne({ where: { email } });
+      const user = await User.findOne({ where: { user_id } });
       if (!user) {
         return done(null, false, { message: 'no user' });
       }

@@ -7,7 +7,7 @@ import local from './local';
 export default () => {
     //로그인할때 1회 실행   
     passport.serializeUser((user: User, done) =>
-        done(null, user.email)
+        done(null, user.user_id)
     );
     //매번 요청할 때 마다 실행
     passport.deserializeUser(async (id: number, done) => {

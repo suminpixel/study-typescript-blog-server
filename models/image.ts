@@ -21,7 +21,7 @@ Image.init({
 });
 
 export const associate = (db: dbType) => {
-  //db.Image.belongsTo(db.Post);
+  db.Image.belongsTo(db.Post);
 };
 
 export default Image;
