@@ -10,7 +10,7 @@ import { IUser } from '../@types';
 
 const router = express.Router();
 
-router.get('/', isLoggedIn, (req, res) => { // /api/user/
+router.get('/', isLoggedIn, (req, res) => {
   const user = req.user!.toJSON() as User;
   delete user.password;
   return res.json(user);
@@ -193,8 +193,8 @@ router.get('/:id/posts', async (req, res, next) => {
   try {
     const posts = await Post.findAll({
       where: {
-        UserId: parseInt(req.params.id, 10) || (req.user && req.user.id) || 0,
-        RetweetId: null,
+        user_id: parseInt(req.params.id, 10) || (req.user && req.user.id) || 0,
+        retweet_id: null,
       },
       include: [{
         model: User,
@@ -227,3 +227,5 @@ router.patch('/name', isLoggedIn, async (req, res, next) => {
     next(e);
   }
 });
+
+export default router;

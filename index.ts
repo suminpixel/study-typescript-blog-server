@@ -7,25 +7,24 @@ import * as dotenv from 'dotenv';
 import * as hpp from 'hpp';
 import * as helmet from 'helmet';
 import * as passport from 'passport';
-
 import { sequelize } from './models';
+import userRouter from './routes/user';
+import postRouter from './routes/post'
+import postsRouter from './routes/posts'
+import hashtagRouter from './routes/hashtag'
 
 dotenv.config();
 const app = express();
 const prod = process.env.NODE_ENV === 'production';
-const db = require('./models');
-const userAPIRouter = require('./routes/user');
-const postAPIRouter = require('./routes/post');
-const postsAPIRouter = require('./routes/posts');
-const hashtagAPIRouter = require('./routes/hashtag');
 
-sequelize.sync({force : false}) //true : 실행시 초기화
-    .then(()=>{
-        console.log(`db connect ...`);
-    })
-    .catch((e: Error)=>{
-        console.error(`db error : ${e}`);
-    })
+
+sequelize.sync({ force: false })
+  .then(() => {
+    console.log('데이터베이스 연결 성공');
+  })
+  .catch((err: Error) => {
+    console.error(err);
+  });
 
 if(prod){
     app.use(hpp());
@@ -55,7 +54,7 @@ app.use(expressSession({
     cookie: {
         httpOnly: true,
         secure: false,
-        domain: prod ? '.suminblog.com' : undefined
+        domain: prod ? '.sumindev.com' : undefined
     },
     name: 'back',
 }))
@@ -68,12 +67,13 @@ app.get('/', (req, res, next) => {
     res.send('backend running...');
 })
 
-app.use('/api/user', userAPIRouter);
-app.use('/api/post', postAPIRouter);
-app.use('/api/posts', postsAPIRouter);
-app.use('/api/hashtag', hashtagAPIRouter);
-
+app.use('/user', userRouter);
+app.use('/post', postRouter);
+app.use('/posts', postsRouter);
+app.use('/hashtag', hashtagRouter);
 
 app.listen(app.get('port'), ()=>{
     console.log(`server is running on ${app.get('port')}`);
+    
+
 });

@@ -5,13 +5,13 @@ import {
   DataTypes,
   Model,
 } from 'sequelize';
-//import Post from './post';
+
 import { sequelize } from './sequelize';
 import { dbType } from './index';
 import Post from './post';
 
 class User extends Model {
-  public id!: number;
+  public readonly id!: number;
 
   public name!: string;
 
@@ -21,7 +21,7 @@ class User extends Model {
 
   public readonly created!: Date;
 
-  public readonly updated!: Date;
+  public readonly updatedAt!: Date;
 
   public addFollowing!: BelongsToManyAddAssociationMixin<User, number>;
 
@@ -57,15 +57,15 @@ User.init({
 }, {
   sequelize,
   modelName: 'User',
-  tableName: 'user',
+  tableName: 'User',
   charset: 'utf8',
   collate: 'utf8_general_ci', // 한글이 저장돼요
 });
 
 export const associate = (db: dbType) => {
-  db.User.hasMany(db.Post, { as: 'Posts' }); // id: , post_id:
-  db.User.hasMany(db.Comment);
-  db.User.belongsToMany(db.Post, { through: 'Like', as: 'Liked' });
+  db.User.hasMany(db.Post, { as: 'Posts',foreignKey: 'post_id' });
+  db.User.hasMany(db.Comment, {foreignKey: 'user_id'});
+  db.User.belongsToMany(db.Post, { through: 'Like', as: 'Liked' ,foreignKey: 'user_id' });
   db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'following_id' });
   db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'follower_id' });
 };

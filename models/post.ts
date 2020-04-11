@@ -24,9 +24,9 @@ import {
   
     public retweet_id!: number | null;
   
-    public readonly created!: Date;
+    public readonly createdAt!: Date;
 
-    public readonly updated!: Date;
+    public readonly updatedAt!: Date;
   
     public addHashtags!: HasManyAddAssociationsMixin<Hashtag, number>
   
@@ -61,18 +61,18 @@ import {
   }, {
     sequelize,
     modelName: 'Post',
-    tableName: 'post',
+    tableName: 'Post',
     charset: 'utf8mb4', //  한글+이모티콘
     collate: 'utf8mb4_general_ci',
   });
   
   export const associate = (db: dbType) => {
-    db.Post.belongsTo(db.User); // 테이블에 userId 컬럼이 생겨요
-    db.Post.hasMany(db.Comment);
-    db.Post.hasMany(db.Image);
-    db.Post.belongsTo(db.Post, { as: 'Retweet' }); // RetweetId 컬럼 생겨요
-    db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' });
-    db.Post.belongsToMany(db.User, { through: 'Like', as: 'Likers' });
+    db.Post.belongsTo(db.User, {foreignKey: 'user_id' }); // 테이블에 user_id
+    db.Post.hasMany(db.Comment, {foreignKey: 'post_id' });
+    db.Post.hasMany(db.Image, {foreignKey: 'post_id' });
+    db.Post.belongsTo(db.Post, { as: 'Retweet' , foreignKey: 'retweet_id' }); 
+    db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' , foreignKey: 'hashtag_id' });
+    db.Post.belongsToMany(db.User, { through: 'Like', as: 'Likers' ,foreignKey: 'post_id'});
   };
   
   export default Post;

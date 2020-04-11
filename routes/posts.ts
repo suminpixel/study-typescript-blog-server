@@ -38,7 +38,7 @@ router.get('/', async (req, res, next) => { // GET /api/posts
           model: Image,
         }],
       }],
-      order: [['created', 'DESC']], // DESC는 내림차순, ASC는 오름차순
+      order: [['createdAt', 'DESC']], // DESC는 내림차순, ASC는 오름차순
       limit: parseInt(req.query.limit, 10),
     });
     res.json(posts);

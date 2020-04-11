@@ -36,7 +36,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST 
     const hashtags: string[] = req.body.content.match(/#[^\s]+/g);
     const newPost = await Post.create({
       content: req.body.content, // ex) '제로초 파이팅 #구독 #좋아요 눌러주세요'
-      UserId: req.user!.id,
+      user_id: req.user!.id,
     });
     if (hashtags) {
       const promises = hashtags.map<Bluebird<[Hashtag, boolean]>>((tag: string) => Hashtag.findOrCreate({
@@ -131,7 +131,7 @@ router.get('/:id/comments', async (req, res, next) => {
       where: {
         post_id: req.params.id,
       },
-      order: [['created', 'ASC']],
+      order: [['createdAt', 'ASC']],
       include: [{
         model: User,
         attributes: ['id', 'name'],
@@ -193,7 +193,7 @@ router.delete('/:id/like', isLoggedIn, async (req, res, next) => {
       return res.status(404).send('포스트가 존재하지 않습니다.');
     }
     await post.removeLiker(req.user!.id);
-    return res.json({ userId: req.user!.id });
+    return res.json({ user_id: req.user!.id });
   } catch (e) {
     console.error(e);
     return next(e);
@@ -218,16 +218,16 @@ router.post('/:id/retweet', isLoggedIn, async (req, res, next) => {
     const retweetTargetId = post.retweet_id || post.id;
     const exPost = await Post.findOne({
       where: {
-        UserId: req.user!.id,
-        RetweetId: retweetTargetId,
+        user_id: req.user!.id,
+        retweet_id: retweetTargetId,
       },
     });
     if (exPost) {
       return res.status(403).send('이미 리트윗했습니다.');
     }
     const retweet = await Post.create({
-      UserId: req.user!.id,
-      RetweetId: retweetTargetId,
+      user_id: req.user!.id,
+      retweet_id: retweetTargetId,
       content: 'retweet',
     });
     const retweetWithPrevPost = await Post.findOne({

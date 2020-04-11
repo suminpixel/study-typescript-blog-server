@@ -5,8 +5,8 @@ import { dbType } from './index';
 class Hashtag extends Model {
   public readonly id!: number;
   public name!: string;
-  public readonly created!: Date;
-  public readonly updated!: Date;
+  public readonly created_at!: Date;
+  public readonly updated_at!: Date;
 }
 
 Hashtag.init({
@@ -17,12 +17,12 @@ Hashtag.init({
 }, {
   sequelize,
   modelName: 'Hashtag',
-  tableName: 'hashtag',
+  tableName: 'Hashtag',
   charset: 'utf8mb4',
   collate: 'utf8mb4_general_ci',
 });
 
 export const associate = (db: dbType) => {
-  db.Hashtag.belongsToMany(db.Post, { through: 'PostHashtag' });
+  db.Hashtag.belongsToMany(db.Post, { through: 'PostHashtag' , foreignKey: 'hashtag_id' });
 };
 export default Hashtag;

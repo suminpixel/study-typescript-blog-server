@@ -5,6 +5,11 @@ declare module '*.json' {
   export default value;
 }
 
+declare module "express-serve-static-core" {
+    interface Request {
+        user?: User;
+    }
+}
 declare global {
   interface Error {}
 }

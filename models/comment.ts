@@ -15,14 +15,14 @@ Comment.init({
 }, {
   sequelize,
   modelName: 'Comment',
-  tableName: 'comment',
+  tableName: 'Comment',
   charset: 'utf8mb4',
   collate: 'utf8mb4_general_ci',
 });
 
 export const associate = (db: dbType) => {
-  db.Comment.belongsTo(db.User);
-  db.Comment.belongsTo(db.Post);
+  db.Comment.belongsTo(db.User, {foreignKey: 'user_id'} );
+  db.Comment.belongsTo(db.Post, {foreignKey: 'post_id'} );
 };
 
 export default Comment;

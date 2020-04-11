@@ -15,13 +15,13 @@ Image.init({
 }, {
   sequelize,
   modelName: 'Image',
-  tableName: 'image',
+  tableName: 'Image',
   charset: 'utf8',
   collate: 'utf8_general_ci',
 });
 
 export const associate = (db: dbType) => {
-  db.Image.belongsTo(db.Post);
+  db.Image.belongsTo(db.Post, {foreignKey: 'post_id' });
 };
 
 export default Image;
